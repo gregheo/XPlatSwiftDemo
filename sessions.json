@@ -1,5 +1,4 @@
-{
-  "sessions": [
+[
     { "title": "Welcome and Logistics",
       "speaker": "Angela Scott",
       "time": "Friday 9:00"},
@@ -54,5 +53,4 @@
     { "title": "Closing Remarks",
       "speaker": "Tammy Coron",
       "time": "Saturday 4:00"}
-  ]
-}
+]
