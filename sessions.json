@@ -1,0 +1,10 @@
+{
+  "sessions": [
+    { "title": "Cross-Platform Swift",
+      "speaker": "Greg Heo",
+      "time": "Saturday" },
+    { "title": "More Than Just Development",
+      "speaker": "Tim Mitra",
+      "time": "Friday" }
+  ]
+}
