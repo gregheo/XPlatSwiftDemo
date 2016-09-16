@@ -6,13 +6,19 @@
 //  Copyright © 2016 Greg Heo. All rights reserved.
 //
 
-import Cocoa
+import Foundation
 
 public class LocalJSONDataSource {
   private(set) public var sessions: [[String: String]] = []
 
   public init() {
-    let fileUrl = Bundle.main.url(forResource: "sessions", withExtension: "json")!
+#if os(Linux)
+    let fileUrl = URL(fileURLWithPath: "sessions.json")
+#else
+  guard let fileUrl = Bundle.main.url(forResource: "sessions", withExtension: "json") else {
+    fatalError("Could not get file URL from the bundle!")
+  }
+#endif
     
     guard let jsonData = try? Data(contentsOf: fileUrl) else {
       fatalError()
