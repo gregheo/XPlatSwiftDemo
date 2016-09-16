@@ -22,6 +22,10 @@ guard let swiftRegex = try? RegexType(pattern: "swift", options: [.caseInsensiti
   fatalError()
 }
 
+if let jsonData = try? JSONSerialization.data(withJSONObject: sessions, options: [.prettyPrinted]),
+   let jsonString = String(bytes: jsonData, encoding: String.Encoding.utf8) {
+}
+
 for session in sessions {
   if let speaker = session["speaker"], let title = session["title"] {
     if swiftRegex.numberOfMatches(in: title, options: [], range: NSMakeRange(0, title.utf8.count)) > 0 {
