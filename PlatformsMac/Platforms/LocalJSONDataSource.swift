@@ -13,8 +13,10 @@ public class LocalJSONDataSource {
 
   public init() {
 #if os(Linux)
+    typealias RegexType = RegularExpression
     let fileUrl = URL(fileURLWithPath: "sessions.json")
 #else
+  typealias RegexType = NSRegularExpression
   guard let fileUrl = Bundle.main.url(forResource: "sessions", withExtension: "json") else {
     fatalError("Could not get file URL from the bundle!")
   }
@@ -24,9 +26,19 @@ public class LocalJSONDataSource {
       fatalError()
     }
     
+    guard let swiftRegex = try? RegexType(pattern: "(swift|ios)", options: [.caseInsensitive]) else {
+      fatalError()
+    }
+
     do {
       if let sessions = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String:String]] {
-        self.sessions = sessions
+        for session in sessions {
+          if let title = session["title"] {
+            if swiftRegex.numberOfMatches(in: title, options: [], range: NSMakeRange(0, title.utf8.count)) > 0 {
+              self.sessions.append(session)
+            }
+          }
+        }
       }
     } catch {
       fatalError()
