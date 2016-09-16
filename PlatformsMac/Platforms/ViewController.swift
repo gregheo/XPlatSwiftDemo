@@ -12,7 +12,7 @@ class ViewController: NSViewController {
 
   @IBOutlet weak var tableView: NSTableView!
 
-  var sessionDataSource = JSONDataSource(jsonLoader: LocalJSONLoader())
+  var sessionDataSource = JSONDataSource(jsonLoader: RemoteJSONLoader())
   
   override func viewDidLoad() {
     super.viewDidLoad()
