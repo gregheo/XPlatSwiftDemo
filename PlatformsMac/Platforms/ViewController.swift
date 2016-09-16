@@ -12,41 +12,28 @@ class ViewController: NSViewController {
 
   @IBOutlet weak var tableView: NSTableView!
 
-  var sessions: [[String: String]] = []
-
+  var sessionDataSource = LocalJSONDataSource()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     tableView.delegate = self
     tableView.dataSource = self
     
-    let fileUrl = Bundle.main.url(forResource: "sessions", withExtension: "json")!
-
-    guard let jsonData = try? Data(contentsOf: fileUrl) else {
-      fatalError()
-    }
-
-    do {
-      if let sessions = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String:String]] {
-        self.sessions = sessions
-        tableView.reloadData()
-      }
-    } catch {
-      fatalError()
-    }
+    tableView.reloadData()
   }
 
 }
 
 extension ViewController: NSTableViewDataSource {
   func numberOfRows(in tableView: NSTableView) -> Int {
-    return sessions.count
+    return sessionDataSource.count
   }
 }
 
 extension ViewController: NSTableViewDelegate {
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-    let session = sessions[row]
+    let session = sessionDataSource.sessions[row]
     
     guard
       let tableColumn = tableColumn,
