@@ -21,11 +21,11 @@ public class LocalJSONDataSource {
     fatalError("Could not get file URL from the bundle!")
   }
 #endif
-    
+
     guard let jsonData = try? Data(contentsOf: fileUrl) else {
       fatalError()
     }
-    
+
     guard let swiftRegex = try? RegexType(pattern: "(swift|ios)", options: [.caseInsensitive]) else {
       fatalError()
     }
@@ -33,10 +33,10 @@ public class LocalJSONDataSource {
     do {
       if let sessions = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String:String]] {
         for session in sessions {
-          if let title = session["title"] {
-            if swiftRegex.numberOfMatches(in: title, options: [], range: NSMakeRange(0, title.utf8.count)) > 0 {
-              self.sessions.append(session)
-            }
+          guard let title = session["title"] else { continue }
+
+          if swiftRegex.numberOfMatches(in: title, options: [], range: NSMakeRange(0, title.utf8.count)) > 0 {
+            self.sessions.append(session)
           }
         }
       }
@@ -44,7 +44,7 @@ public class LocalJSONDataSource {
       fatalError()
     }
   }
-  
+
   public var count: Int {
     return sessions.count
   }
